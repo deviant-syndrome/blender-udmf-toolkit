@@ -21,6 +21,12 @@ class UDMFToolkitAddonPreferences(bpy.types.AddonPreferences):
         subtype='FILE_PATH',
     )
 
+    baked_texture_folder_path: bpy.props.StringProperty(
+        name="Baked texture directory",
+        description="Directory for the baked textures (should be in your mod 'textures' directory)",
+        subtype='FILE_PATH',
+    )
+
     some_boolean: bpy.props.BoolProperty(
         name="Some Boolean",
         default=True,
