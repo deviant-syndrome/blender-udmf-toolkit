@@ -1,0 +1,40 @@
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.iws
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+*.log
+
+# === Poetry & TOML ===
+pyproject.lock
+
+# Virtual environment (created by Poetry or virtualenv)
+.venv/
+
+# === macOS ===
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# === Windows ===
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# === Linux ===
+*.swp
+*.swo
+
+# === Libraries (consumers are required to bundle them themselves) ===
+libs/udmfio_bundled/
+libs/wadflow
+
+# === scratch ===
+runner.py
