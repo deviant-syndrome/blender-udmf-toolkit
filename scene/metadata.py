@@ -1,10 +1,13 @@
-import bpy
 import bmesh
 
 
-def assign_custom_attribute(obj, face_index, sidedef, texture_type):
-    # Ensure object is in object mode
-    bpy.ops.object.mode_set(mode='OBJECT')
+def assign_custom_attributes(obj, face_index, attributes):
+    """
+    Assign custom attributes to a face in an object's mesh.
+    :param obj: Target object
+    :param face_index: Index of the face to assign attributes to
+    :param attributes: Dictionary of attribute names and their values
+    """
 
     # Create a BMesh instance from the object mesh
     bm = bmesh.new()
@@ -13,22 +16,28 @@ def assign_custom_attribute(obj, face_index, sidedef, texture_type):
     # Ensure lookup table is up-to-date
     bm.faces.ensure_lookup_table()
 
-    # Create custom layers
-    sidedef_layer = bm.faces.layers.int.get("sidedef") or bm.faces.layers.int.new("sidedef")
-    texture_layer = bm.faces.layers.string.get("texture_type") or bm.faces.layers.string.new("texture_type")
-
-    # Assign values to custom layers for the specified face
-    face = bm.faces[face_index]
-    face[sidedef_layer] = sidedef
-    face[texture_layer] = texture_type.encode()  # Store string as bytes
+    for attr_name, attr_value in attributes.items():
+        # Determine the type of the attribute and assign it to the appropriate layer
+        if isinstance(attr_value, int) or isinstance(attr_value, float):
+            attr_layer = bm.faces.layers.int.get(attr_name) or bm.faces.layers.int.new(attr_name)
+            bm.faces[face_index][attr_layer] = int(attr_value)  # Access face by index inside loop
+        elif isinstance(attr_value, str):
+            attr_layer = bm.faces.layers.string.get(attr_name) or bm.faces.layers.string.new(attr_name)
+            bm.faces[face_index][attr_layer] = attr_value.encode()
 
     # Update the mesh
     bm.to_mesh(obj.data)
     bm.free()
 
 
-def get_face_custom_attribute(obj, face_index):
-    """Retrieve the custom attributes sidedef and texture_type from the specified face."""
+def get_custom_attributes(obj, face_index, attr_names):
+    """
+    Retrieve the custom attributes from the specified face.
+    :param obj: Source object
+    :param face_index: Index of the face to retrieve attributes from
+    :param attr_names: List of attribute names to retrieve
+    :return: Dictionary of attribute names and their values
+    """
 
     # Create a BMesh instance from the object mesh
     bm = bmesh.new()
@@ -37,19 +46,21 @@ def get_face_custom_attribute(obj, face_index):
     # Ensure lookup table is up-to-date
     bm.faces.ensure_lookup_table()
 
-    # Get custom layers
-    sidedef_layer = bm.faces.layers.int.get("sidedef")
-    texture_layer = bm.faces.layers.string.get("texture_type")
-
-    if sidedef_layer is None or texture_layer is None:
-        raise ValueError("Custom layers not found on the mesh!")
-
-    # Fetch values from custom layers for the specified face
     face = bm.faces[face_index]
-    sidedef = face[sidedef_layer]
-    texture_type = face[texture_layer].decode()  # Convert bytes back to string
+
+    attributes = {}
+
+    for attr_name in attr_names:
+        # Check if the attribute layer exists and fetch the value
+        attr_layer_int = bm.faces.layers.int.get(attr_name)
+        attr_layer_string = bm.faces.layers.string.get(attr_name)
+
+        if attr_layer_int is not None:
+            attributes[attr_name] = face[attr_layer_int]
+        elif attr_layer_string is not None:
+            attributes[attr_name] = face[attr_layer_string].decode()
 
     # Clean up
     bm.free()
 
-    return sidedef, texture_type
+    return attributes

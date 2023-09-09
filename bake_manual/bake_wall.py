@@ -1,7 +1,7 @@
 import bpy
-from .materials import make_faces_transparent_except, restore_original_materials
-from .utils import get_baked_texture_path
-from ..scene.metadata import get_face_custom_attribute
+from bake_manual.materials import make_faces_transparent_except, restore_original_materials
+from bake_auto.utils import get_baked_texture_path
+from scene.metadata import get_face_custom_attribute
 
 
 def adjust_render_settings_for_wall(obj, face_index):

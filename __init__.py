@@ -1,5 +1,6 @@
+from .operators import export_udmf
 from .operators import import_udmf
-from .ui import popup, preferences
+from .ui import popup, preferences, panels
 
 bl_info = {
     "name": "UDMF Toolkit",
@@ -17,15 +18,18 @@ bl_info = {
 def register():
     popup.register()
     import_udmf.register()
+    export_udmf.register()
     preferences.register()
-
+    panels.register()
     # ... other registration code ...
 
 
 def unregister():
     popup.unregister()
     import_udmf.unregister()
+    export_udmf.unregister()
     preferences.unregister()
+    panels.unregister()
     # ... other unregistration code ...
 
 

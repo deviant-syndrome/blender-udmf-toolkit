@@ -35,8 +35,11 @@ class UDMFToolkitAddonPreferences(bpy.types.AddonPreferences):
     def draw(self, context):
         layout = self.layout
 
-        layout.label(text="Path to External Tool:")
+        layout.label(text="Base texture dir:")
         layout.prop(self, "base_texture_folder_path")
+
+        layout.label(text="Baked texture dir:")
+        layout.prop(self, "baked_texture_folder_path")
 
         layout.label(text="Some Boolean Preference:")
         layout.prop(self, "some_boolean")

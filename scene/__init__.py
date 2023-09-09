@@ -1,1 +1,1 @@
-from .udmf_objects import create_udmf_scene
+from .scene_import import create_udmf_scene

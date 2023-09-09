@@ -4,7 +4,7 @@ from mathutils import Vector
 from .visual_sector import VisualSector
 
 
-def create_sector_polygon(sector, graph, map, bm, vertices):
+def create_sector_polygon(sector, graph, map, bm, vertices, sector_metadata, height_func, texture_func):
     vertex_coords = []
     visual_sector = VisualSector(map.sectors[sector])
     # Iterate over each linedef associated with this sector
@@ -28,11 +28,17 @@ def create_sector_polygon(sector, graph, map, bm, vertices):
     new_vertex_coords_2d, out_edges, out_faces, orig_verts, orig_edges, orig_faces = output
 
     # Convert the 2D coords back to 3D for use in Blender
-    new_vertex_coords_3d = [(v.x, v.y, visual_sector.heightfloor) for v in new_vertex_coords_2d]
-    print("total new verts: ", len(new_vertex_coords_3d))
-    print(out_faces)
+    new_vertex_coords_3d = [(v.x, v.y, height_func(visual_sector)) for v in new_vertex_coords_2d]
+
     vert_map = [bm.verts.new(v) for v in new_vertex_coords_3d]
 
     # Add the new faces to the BMesh
     for face_indices in out_faces:
         bm.faces.new([vert_map[i] for i in face_indices])
+        face_index = len(bm.faces) - 1
+        sector_metadata[face_index] = {
+                "sector_index": sector,
+                "flat_texture": texture_func(visual_sector),
+        }
+
+
