@@ -1,6 +1,7 @@
 from .operators import export_udmf
 from .operators import import_udmf
 from .ui import popup, preferences, panels
+from .scene import init_props, clear_props
 
 bl_info = {
     "name": "UDMF Toolkit",
@@ -21,6 +22,7 @@ def register():
     export_udmf.register()
     preferences.register()
     panels.register()
+    init_props()
     # ... other registration code ...
 
 
@@ -30,6 +32,7 @@ def unregister():
     export_udmf.unregister()
     preferences.unregister()
     panels.unregister()
+    clear_props()
     # ... other unregistration code ...
 
 

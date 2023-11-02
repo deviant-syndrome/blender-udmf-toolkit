@@ -1,6 +1,8 @@
 import bpy
 from mathutils import Vector
 
+
+# noinspection DuplicatedCode
 def get_addon_package():
     """Warning: This function is not safe to use in all cases. It is only safe to use if the current package is one
     level down from the root package. Blender addon-preferences API requires the key to be the root package name"""

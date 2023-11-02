@@ -9,6 +9,7 @@ class MeshObjectLifecycle:
         self.mesh = None
         self.bm = None
         self.obj = None
+        self.scale = bpy.context.scene.map_scale
 
     def __enter__(self):
         # Ensure we're in OBJECT mode
@@ -25,6 +26,7 @@ class MeshObjectLifecycle:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.bm:
+            bmesh.ops.scale(self.bm, vec=(self.scale, self.scale, self.scale), verts=self.bm.verts)
             self.bm.to_mesh(self.mesh)
             self.bm.free()
 

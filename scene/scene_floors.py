@@ -31,7 +31,6 @@ class FloorOperations:
         with MeshObjectLifecycle(self.create_name()) as (bm, mesh):
             floors_metadata = self.draw(bm)
             floors_mesh = mesh
-            bmesh.ops.scale(bm, vec=(0.01, 0.01, 0.01), verts=bm.verts)
         return floors_metadata, floors_mesh, bpy.data.objects[self.create_name()]
 
     def add_metadata(self, floors_obj, floor_metadata):

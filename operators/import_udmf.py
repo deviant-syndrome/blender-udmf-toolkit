@@ -14,17 +14,27 @@ class IMPORT_OT_udmf(bpy.types.Operator):
     bl_label = "Import UDMF"
     bl_options = {'REGISTER', 'UNDO'}
 
+    scale: bpy.props.FloatProperty(name="Scale", default=0.01)
+
     # Define the filepath property for the file browser
     filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+
+    def get_options(self):
+        return {
+            "scale": self.scale,
+            "original_pwad": self.filepath
+        }
 
     def execute(self, context):
         # Your import logic goes here, use self.filepath for the file path
         # For demonstration:
         print(f"Importing UDMF map from: {self.filepath}")
         try:
+            options = self.get_options()
             udmf_map = load_udmf_map(self.filepath)
-            create_udmf_scene(udmf_map)
+            create_udmf_scene(udmf_map, options)
         except Exception as e:
+            # TODO: clean the scene
             popup_error_message(e)
             raise e
 
@@ -35,7 +45,7 @@ class IMPORT_OT_udmf(bpy.types.Operator):
         return {'RUNNING_MODAL'}
 
 
-class IMPORT_OT_pwad(bpy.types.Operator):
+class IMPORT_OT_pwad(IMPORT_OT_udmf):
     bl_idname = "import_scene.pwad"
     bl_label = "Import PWAD"
     bl_options = {'REGISTER', 'UNDO'}
@@ -48,8 +58,9 @@ class IMPORT_OT_pwad(bpy.types.Operator):
         # For demonstration:
         print(f"Importing PWAD map from: {self.filepath}")
         try:
+            options = self.get_options()
             udmf_map = load_map_from_pwad(self.filepath)
-            create_udmf_scene(udmf_map)
+            create_udmf_scene(udmf_map, options)
         except Exception as e:
             popup_error_message(e)
             raise e

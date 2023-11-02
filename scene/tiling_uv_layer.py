@@ -3,6 +3,7 @@ import bpy
 
 
 def uv_map_sector_by_bounding_box(obj, sector_faces_dict):
+    map_scale_reciprocal = 1 / bpy.context.scene.map_scale
     # Ensure object is in object mode
     bpy.ops.object.mode_set(mode='OBJECT')
 
@@ -40,14 +41,13 @@ def uv_map_sector_by_bounding_box(obj, sector_faces_dict):
         bottom_vertices_x = [v.co.x for f in faces for v in f.verts if v.co.y == min_y]
 
         # Calculate the widths using the leftmost and rightmost vertices on the top and bottom edges
-        top_edge_width = (max(top_vertices_x) - min(top_vertices_x)) * 100
-        bottom_edge_width = (max(bottom_vertices_x) - min(bottom_vertices_x)) * 100
+        top_edge_width = (max(top_vertices_x) - min(top_vertices_x)) * map_scale_reciprocal
+        bottom_edge_width = (max(bottom_vertices_x) - min(bottom_vertices_x)) * map_scale_reciprocal
 
         # Set bbox_width to the longer of the top and bottom edge widths
         bbox_width = max(top_edge_width, bottom_edge_width)
-
         # Calculate the height as the difference between the y-coordinates of the bounding box
-        bbox_height = (max_y - min_y) * 100
+        bbox_height = (max_y - min_y) * map_scale_reciprocal
 
         # Scale and offset factors for UV mapping
         scale_x = 1.0 / (max_x - min_x)
@@ -60,9 +60,8 @@ def uv_map_sector_by_bounding_box(obj, sector_faces_dict):
             face[width_layer] = int(bbox_width)  # Access face by index inside loop
             face[height_layer] = int(bbox_height)  # Access face by index inside loop
             # todo: align to the nearest multiple of 64
-
-            face[offset_x_layer] = int(min_x * 100)  # Access face by index inside loop
-            face[offset_y_layer] = int(min_y * 100)  # Access face by index inside loop
+            face[offset_x_layer] = int(min_x * map_scale_reciprocal)  # Access face by index inside loop
+            face[offset_y_layer] = int(min_y * map_scale_reciprocal)  # Access face by index inside loop
 
             for loop in face.loops:
                 u = (loop.vert.co.x + offset_x) * scale_x

@@ -1,0 +1,59 @@
+name: Blender Portable CI with Cache
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  BLENDER_VERSION: '2.93.1'
+  BLENDER_VERSION_SHORT: '2.93'
+  BLENDER_NAME: 'blender-2.93.1-linux-x64'
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache Blender
+        id: cache-blender
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/${{ env.BLENDER_NAME }}.tar.xz
+            ~/${{ env.BLENDER_NAME }}
+          key: ${{ runner.os }}-blender-${{ env.BLENDER_VERSION }}
+
+      - name: Download and Extract Blender
+        if: steps.cache-blender.outputs.cache-hit != 'true'
+        run: |
+          curl -L -o ~/${{ env.BLENDER_NAME }}.tar.xz https://download.blender.org/release/Blender2.93/${{ env.BLENDER_NAME }}.tar.xz
+          tar -xf ~/${{ env.BLENDER_NAME }}.tar.xz -C ~/
+
+      - name: Add Blender to PATH
+        run: echo "$HOME/${{ env.BLENDER_NAME }}" >> $GITHUB_PATH
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7' # Specify the Python version you need
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Bootstrap dependencies
+        run: sh bootstrap.sh ci
+
+      - name: Create Blender Add-on Directory
+        run: mkdir -p $HOME/.config/blender/${{ env.BLENDER_VERSION_SHORT }}/scripts/addons
+
+      - name: Copy Repository to Blender Add-on Directory
+        run: cp -r ${{ github.workspace }} "$HOME/.config/blender/${{ env.BLENDER_VERSION_SHORT }}/scripts/addons/udmf_blender_addon"
+
+      - name: Install Add-on
+        run: blender --background --python-use-system-env --python-exit-code 14 --python ./ci/install_addon.py
+
+      - name: Run Tests
+        run: sh ./ci/run_tests.sh $HOME/${{ env.BLENDER_NAME }}

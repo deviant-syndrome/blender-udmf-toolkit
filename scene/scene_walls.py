@@ -12,7 +12,6 @@ from .texture_utils import set_default_uv_on_mesh
 def create_walls(graph, udmf_map):
     with MeshObjectLifecycle("UDMF_Walls") as (bm, mesh):
         face_metadata = draw_walls(graph, udmf_map, bm)
-        bmesh.ops.scale(bm, vec=(0.01, 0.01, 0.01), verts=bm.verts)
         walls_mesh = mesh
 
     return face_metadata, walls_mesh, bpy.data.objects["UDMF_Walls"]
