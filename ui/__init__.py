@@ -4,5 +4,5 @@ from .panels import register as panels_register
 
 if __name__ == "__main__":
     preferences_register()
-    popup_register()
+    popup.register()
     panels_register()

@@ -1,4 +1,5 @@
 import bpy
+from mathutils import Vector
 
 
 # noinspection DuplicatedCode
