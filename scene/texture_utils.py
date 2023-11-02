@@ -38,7 +38,9 @@ def get_simple_tiling_on_mesh(mesh, face_index, texture_image):
 
     height = (highest_z - lowest_z) * 100
 
-    print("Face #", face_index, "width: ", round(width, 2), "height: ", round(height, 2))
+    print(
+        "Face #", face_index, "width: ", round(width, 2), "height: ", round(height, 2)
+    )
     print("Texture dimensions: ", texture_image.size[0], texture_image.size[1])
 
     # Calculate tiling factors based on the texture size

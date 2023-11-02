@@ -17,8 +17,12 @@ def create_material_for_flat(faces, texture_name, obj, layers, params_func):
 
 
 def create_material_for_sector_floor(faces, texture_name, obj, layers):
-    create_material_for_flat(faces, texture_name, obj, layers, FloorMaterialNodeParameters)
+    create_material_for_flat(
+        faces, texture_name, obj, layers, FloorMaterialNodeParameters
+    )
 
 
 def create_material_for_sector_ceiling(faces, texture_name, obj, layers):
-    create_material_for_flat(faces, texture_name, obj, layers, CeilingMaterialNodeParameters)
+    create_material_for_flat(
+        faces, texture_name, obj, layers, CeilingMaterialNodeParameters
+    )

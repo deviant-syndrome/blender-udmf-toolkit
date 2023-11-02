@@ -15,16 +15,18 @@ class MinimalUDMFPWAD:
         self.codename = codename
 
     def get_lumps(self):
-        lumps = [WriteableLump(self.codename, b''),
-                 WriteableLump('TEXTMAP', self.udmf_map_text),
-                 WriteableLump('ENDMAP', b'')]
+        lumps = [
+            WriteableLump(self.codename, b""),
+            WriteableLump("TEXTMAP", self.udmf_map_text),
+            WriteableLump("ENDMAP", b""),
+        ]
         return lumps
 
 
 def load_map_from_pwad(pwad_filename):
     wad_file = WADFile(pwad_filename)
-    map_bytes = wad_file.read_lump('TEXTMAP')
-    io = StringIO(map_bytes.decode('utf-8'))
+    map_bytes = wad_file.read_lump("TEXTMAP")
+    io = StringIO(map_bytes.decode("utf-8"))
     return load_udmf_map(io)
 
 
@@ -53,7 +55,7 @@ def export_map_to_pwad(pwad_filename, udmf_map):
 
     # Get the contents of the buffer
     udmf_text = buffer.getvalue()
-    pwad = MinimalUDMFPWAD('E1M1', udmf_text.encode('utf-8'))
+    pwad = MinimalUDMFPWAD("E1M1", udmf_text.encode("utf-8"))
     write_lumps_to_pwad(pwad.get_lumps(), pwad_filename)
 
     buffer.close()

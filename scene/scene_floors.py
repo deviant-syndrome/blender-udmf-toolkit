@@ -4,7 +4,10 @@ import bmesh
 import bpy
 
 from .geometry_horiz import draw_floors, draw_ceilings
-from .materials_floors import create_material_for_sector_floor, create_material_for_sector_ceiling
+from .materials_floors import (
+    create_material_for_sector_floor,
+    create_material_for_sector_ceiling,
+)
 from .mesh_lifecycle import MeshObjectLifecycle
 from .metadata import assign_custom_attributes
 from .tiling_uv_layer import uv_map_sector_by_bounding_box
@@ -54,10 +57,10 @@ class FloorOperations:
 
         layers = {
             "width": bm.faces.layers.int.get("bbox_width"),
-            'height': bm.faces.layers.int.get("bbox_height"),
+            "height": bm.faces.layers.int.get("bbox_height"),
             "offset_x": bm.faces.layers.int.get("offset_x"),
             "offset_y": bm.faces.layers.int.get("offset_y"),
-            "sector_index": sector_index_layer
+            "sector_index": sector_index_layer,
         }
         sector_faces = defaultdict(list)
         sector_texture_names = {}
@@ -78,8 +81,14 @@ class FloorOperations:
         floors_obj["udmf_type"] = self.create_type()
         sector_faces_dict = self.add_metadata(floors_obj, floor_metadata)
         uv_map_sector_by_bounding_box(floors_obj, sector_faces_dict)
-        self.texture({face_index: data["flat_texture"] for face_index, data in floor_metadata.items()}, floors_mesh,
-                     floors_obj)
+        self.texture(
+            {
+                face_index: data["flat_texture"]
+                for face_index, data in floor_metadata.items()
+            },
+            floors_mesh,
+            floors_obj,
+        )
 
 
 class CeilingOperations(FloorOperations):

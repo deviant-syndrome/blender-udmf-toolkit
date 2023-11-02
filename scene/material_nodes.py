@@ -104,10 +104,10 @@ def create_material_node_tree(material, texture_image, tiling, texture_data):
         nodes.remove(node)
 
     # Add BSDF shader
-    bsdf = nodes.new(type='ShaderNodeBsdfDiffuse')
+    bsdf = nodes.new(type="ShaderNodeBsdfDiffuse")
     bsdf.location = (0, 0)
 
-    material_output = nodes.new(type='ShaderNodeOutputMaterial')
+    material_output = nodes.new(type="ShaderNodeOutputMaterial")
     material_output.location = (800, 0)
 
     # UV Map node
@@ -120,12 +120,12 @@ def create_material_node_tree(material, texture_image, tiling, texture_data):
 
     # Multiply nodes (equivalent to dividing by texture dimensions)
     multiply_node_x = nodes.new(type="ShaderNodeMath")
-    multiply_node_x.operation = 'MULTIPLY'
+    multiply_node_x.operation = "MULTIPLY"
     multiply_node_x.location = (-800, -200)
 
     # Multiply nodes (equivalent to dividing by texture dimensions)
     multiply_node_y = nodes.new(type="ShaderNodeMath")
-    multiply_node_y.operation = 'MULTIPLY'
+    multiply_node_y.operation = "MULTIPLY"
     multiply_node_y.location = (-800, -200)
 
     # Combine XYZ node
@@ -147,7 +147,7 @@ def create_material_node_tree(material, texture_image, tiling, texture_data):
     mapping_node = nodes.new(type="ShaderNodeMapping")
     mapping_node.location = (-400, 0)
 
-    tex_image = nodes.new('ShaderNodeTexImage')
+    tex_image = nodes.new("ShaderNodeTexImage")
     tex_image.image = texture_image
     tex_image.name = "Tiled Texture"
     tex_image.location = (200, 0)
@@ -168,9 +168,13 @@ def create_material_node_tree(material, texture_image, tiling, texture_data):
 
     material.node_tree.links.new(offset_node_x.outputs[0], offset_combine_xyz.inputs[0])
     material.node_tree.links.new(offset_node_y.outputs[0], offset_combine_xyz.inputs[1])
-    material.node_tree.links.new(offset_combine_xyz.outputs[0], mapping_node.inputs["Location"])
+    material.node_tree.links.new(
+        offset_combine_xyz.outputs[0], mapping_node.inputs["Location"]
+    )
 
-    material.node_tree.links.new(uv_map_node.outputs["UV"], separate_xyz.inputs["Vector"])
+    material.node_tree.links.new(
+        uv_map_node.outputs["UV"], separate_xyz.inputs["Vector"]
+    )
 
     material.node_tree.links.new(separate_xyz.outputs["X"], multiply_node_x.inputs[0])
     material.node_tree.links.new(value_node_x.outputs[0], multiply_node_x.inputs[1])
@@ -181,7 +185,13 @@ def create_material_node_tree(material, texture_image, tiling, texture_data):
     material.node_tree.links.new(multiply_node_x.outputs[0], combine_xyz.inputs[0])
     material.node_tree.links.new(multiply_node_y.outputs[0], combine_xyz.inputs[1])
 
-    material.node_tree.links.new(mapping_node.inputs["Vector"], combine_xyz.outputs["Vector"])
-    material.node_tree.links.new(mapping_node.outputs["Vector"], tex_image.inputs["Vector"])
+    material.node_tree.links.new(
+        mapping_node.inputs["Vector"], combine_xyz.outputs["Vector"]
+    )
+    material.node_tree.links.new(
+        mapping_node.outputs["Vector"], tex_image.inputs["Vector"]
+    )
     material.node_tree.links.new(tex_image.outputs["Color"], bsdf.inputs["Color"])
-    material.node_tree.links.new(bsdf.outputs["BSDF"], material_output.inputs["Surface"])
+    material.node_tree.links.new(
+        bsdf.outputs["BSDF"], material_output.inputs["Surface"]
+    )

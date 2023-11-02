@@ -22,5 +22,5 @@ class TestLoadBasicWad(unittest.TestCase):
         self.assertEqual(1, 1)
 
 
-if __name__ == '__main__':
-    unittest.main(argv=['first-arg-is-ignored'], exit=True)
+if __name__ == "__main__":
+    unittest.main(argv=["first-arg-is-ignored"], exit=True)

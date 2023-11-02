@@ -19,10 +19,16 @@ def assign_custom_attributes(obj, face_index, attributes):
     for attr_name, attr_value in attributes.items():
         # Determine the type of the attribute and assign it to the appropriate layer
         if isinstance(attr_value, int) or isinstance(attr_value, float):
-            attr_layer = bm.faces.layers.int.get(attr_name) or bm.faces.layers.int.new(attr_name)
-            bm.faces[face_index][attr_layer] = int(attr_value)  # Access face by index inside loop
+            attr_layer = bm.faces.layers.int.get(attr_name) or bm.faces.layers.int.new(
+                attr_name
+            )
+            bm.faces[face_index][attr_layer] = int(
+                attr_value
+            )  # Access face by index inside loop
         elif isinstance(attr_value, str):
-            attr_layer = bm.faces.layers.string.get(attr_name) or bm.faces.layers.string.new(attr_name)
+            attr_layer = bm.faces.layers.string.get(
+                attr_name
+            ) or bm.faces.layers.string.new(attr_name)
             bm.faces[face_index][attr_layer] = attr_value.encode()
 
     # Update the mesh

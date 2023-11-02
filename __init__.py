@@ -16,6 +16,7 @@ bl_info = {
     "category": "Import-Export",
 }
 
+
 def register():
     popup.register()
     import_udmf.register()

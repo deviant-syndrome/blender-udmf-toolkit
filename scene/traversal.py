@@ -6,23 +6,27 @@ def create_graph(udmf_map):
 
     # Iterate over linedefs to populate the graph
     for linedef in udmf_map.linedefs:
-        front_sidedef = ExtendedSidedef(udmf_map.sidedefs[linedef.sidefront], linedef.sidefront)
+        front_sidedef = ExtendedSidedef(
+            udmf_map.sidedefs[linedef.sidefront], linedef.sidefront
+        )
         front_sector = front_sidedef.sector
 
         back_sidedef = None
         back_sector = None
 
         if linedef.twosided:
-            back_sidedef = ExtendedSidedef(udmf_map.sidedefs[linedef.sideback], linedef.sideback)
+            back_sidedef = ExtendedSidedef(
+                udmf_map.sidedefs[linedef.sideback], linedef.sideback
+            )
             back_sector = back_sidedef.sector
 
         entry = {
-            'linedef': (linedef.v1, linedef.v2),
-            'front_sidedef': front_sidedef,
-            'front_sector': front_sector,
-            'back_sidedef': back_sidedef,
-            'back_sector': back_sector,
-            'twosided': bool(back_sidedef)
+            "linedef": (linedef.v1, linedef.v2),
+            "front_sidedef": front_sidedef,
+            "front_sector": front_sector,
+            "back_sidedef": back_sidedef,
+            "back_sector": back_sector,
+            "twosided": bool(back_sidedef),
         }
 
         graph[front_sector].append(entry)

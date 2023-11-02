@@ -9,7 +9,7 @@ def make_faces_transparent_except(obj, face_index):
     original_materials = {}
 
     # Create a transparent material if not exists
-    if 'Transparent_Material' not in bpy.data.materials:
+    if "Transparent_Material" not in bpy.data.materials:
         transparent_mat = bpy.data.materials.new(name="Transparent_Material")
         transparent_mat.use_nodes = True
         nodes = transparent_mat.node_tree.nodes
@@ -20,12 +20,11 @@ def make_faces_transparent_except(obj, face_index):
         material_output = nodes.new(type="ShaderNodeOutputMaterial")
 
         transparent_mat.node_tree.links.new(
-            transparent_bsdf.outputs["BSDF"],
-            material_output.inputs["Surface"]
+            transparent_bsdf.outputs["BSDF"], material_output.inputs["Surface"]
         )
 
         # Set Blend Mode to Alpha Blend
-        transparent_mat.blend_method = 'BLEND'
+        transparent_mat.blend_method = "BLEND"
 
     else:
         transparent_mat = bpy.data.materials["Transparent_Material"]

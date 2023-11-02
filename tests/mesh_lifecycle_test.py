@@ -4,7 +4,6 @@ from udmf_blender_addon.scene.mesh_lifecycle import MeshObjectLifecycle
 
 
 class TestMeshObjectLifecycle(unittest.TestCase):
-
     def setUp(self):
         # Ensure we're in OBJECT mode
         if bpy.context.mode != "OBJECT":
@@ -32,5 +31,5 @@ class TestMeshObjectLifecycle(unittest.TestCase):
             self.assertAlmostEqual(dimension, expected_scale, places=6)
 
 
-if __name__ == '__main__':
-    unittest.main(argv=['first-arg-is-ignored'], exit=False)
+if __name__ == "__main__":
+    unittest.main(argv=["first-arg-is-ignored"], exit=False)

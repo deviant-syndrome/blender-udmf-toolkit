@@ -5,7 +5,7 @@ import bpy
 def uv_map_sector_by_bounding_box(obj, sector_faces_dict):
     map_scale_reciprocal = 1 / bpy.context.scene.map_scale
     # Ensure object is in object mode
-    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.mode_set(mode="OBJECT")
 
     # Create a BMesh instance from the object mesh
     bm = bmesh.new()
@@ -13,11 +13,19 @@ def uv_map_sector_by_bounding_box(obj, sector_faces_dict):
 
     # Ensure lookup table is up-to-date
     bm.faces.ensure_lookup_table()
-    width_layer = bm.faces.layers.int.get("bbox_width") or bm.faces.layers.int.new("bbox_width")
-    height_layer = bm.faces.layers.int.get("bbox_height") or bm.faces.layers.int.new("bbox_height")
+    width_layer = bm.faces.layers.int.get("bbox_width") or bm.faces.layers.int.new(
+        "bbox_width"
+    )
+    height_layer = bm.faces.layers.int.get("bbox_height") or bm.faces.layers.int.new(
+        "bbox_height"
+    )
 
-    offset_x_layer = bm.faces.layers.int.get("offset_x") or bm.faces.layers.int.new("offset_x")
-    offset_y_layer = bm.faces.layers.int.get("offset_y") or bm.faces.layers.int.new("offset_y")
+    offset_x_layer = bm.faces.layers.int.get("offset_x") or bm.faces.layers.int.new(
+        "offset_x"
+    )
+    offset_y_layer = bm.faces.layers.int.get("offset_y") or bm.faces.layers.int.new(
+        "offset_y"
+    )
 
     # Get the sector_index custom layer
     sector_index_layer = bm.faces.layers.int.get("sector_index")
@@ -41,8 +49,12 @@ def uv_map_sector_by_bounding_box(obj, sector_faces_dict):
         bottom_vertices_x = [v.co.x for f in faces for v in f.verts if v.co.y == min_y]
 
         # Calculate the widths using the leftmost and rightmost vertices on the top and bottom edges
-        top_edge_width = (max(top_vertices_x) - min(top_vertices_x)) * map_scale_reciprocal
-        bottom_edge_width = (max(bottom_vertices_x) - min(bottom_vertices_x)) * map_scale_reciprocal
+        top_edge_width = (
+            max(top_vertices_x) - min(top_vertices_x)
+        ) * map_scale_reciprocal
+        bottom_edge_width = (
+            max(bottom_vertices_x) - min(bottom_vertices_x)
+        ) * map_scale_reciprocal
 
         # Set bbox_width to the longer of the top and bottom edge widths
         bbox_width = max(top_edge_width, bottom_edge_width)
@@ -60,8 +72,12 @@ def uv_map_sector_by_bounding_box(obj, sector_faces_dict):
             face[width_layer] = int(bbox_width)  # Access face by index inside loop
             face[height_layer] = int(bbox_height)  # Access face by index inside loop
             # todo: align to the nearest multiple of 64
-            face[offset_x_layer] = int(min_x * map_scale_reciprocal)  # Access face by index inside loop
-            face[offset_y_layer] = int(min_y * map_scale_reciprocal)  # Access face by index inside loop
+            face[offset_x_layer] = int(
+                min_x * map_scale_reciprocal
+            )  # Access face by index inside loop
+            face[offset_y_layer] = int(
+                min_y * map_scale_reciprocal
+            )  # Access face by index inside loop
 
             for loop in face.loops:
                 u = (loop.vert.co.x + offset_x) * scale_x

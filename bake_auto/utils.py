@@ -38,13 +38,13 @@ def save_baked_image(image, name):
     path = get_baked_texture_path(name)
     image.filepath_raw = path
     print("Saving image to " + path)
-    image.file_format = 'PNG'
+    image.file_format = "PNG"
     image.save()
 
 
 def find_baked_image_node(material):
     for node in material.node_tree.nodes:
-        if node.type == 'TEX_IMAGE' and node.name.startswith('Bake'):
+        if node.type == "TEX_IMAGE" and node.name.startswith("Bake"):
             return node
     return None
 

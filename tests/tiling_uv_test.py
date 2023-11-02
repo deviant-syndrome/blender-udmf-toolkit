@@ -7,7 +7,6 @@ from udmf_blender_addon.scene.metadata import assign_custom_attributes
 
 
 class TestUVMapping(unittest.TestCase):
-
     def setUp(self):
         # Define the 5 vertices of the polygon
         vertices = [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0), (0.5, 1.5, 0)]
@@ -44,7 +43,7 @@ class TestUVMapping(unittest.TestCase):
 
     def tearDown(self):
         # Deselect all objects
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         # Select the object
         self.obj.select_set(True)
@@ -61,11 +60,7 @@ class TestUVMapping(unittest.TestCase):
         self.obj = None
 
     def test_offset_face_layers(self):
-        expected_bbox = {
-            0: (0, 0),
-            1: (2, 2),
-            2: (0, 0)
-        }
+        expected_bbox = {0: (0, 0), 1: (2, 2), 2: (0, 0)}
         # Set map scale
         map_scale = 0.5
         bpy.context.scene.map_scale = map_scale
@@ -83,8 +78,12 @@ class TestUVMapping(unittest.TestCase):
             # Example assertions - replace with your own logic
             expected_w, expected_h = expected_bbox.get(face.index)
 
-            assert face[width_layer] == expected_w, f"Face {face.index} has invalid width: {face[width_layer]}"
-            assert face[height_layer] == expected_h, f"Face {face.index} has invalid height: {face[height_layer]}"
+            assert (
+                face[width_layer] == expected_w
+            ), f"Face {face.index} has invalid width: {face[width_layer]}"
+            assert (
+                face[height_layer] == expected_h
+            ), f"Face {face.index} has invalid height: {face[height_layer]}"
 
         # Clean up
         bm.free()
@@ -126,5 +125,5 @@ class TestUVMapping(unittest.TestCase):
                     self.assertAlmostEqual(uv.y, expected_v, places=6)
 
 
-if __name__ == '__main__':
-    unittest.main(argv=['first-arg-is-ignored'], exit=False)
+if __name__ == "__main__":
+    unittest.main(argv=["first-arg-is-ignored"], exit=False)

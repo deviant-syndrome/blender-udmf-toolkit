@@ -4,13 +4,17 @@ import bpy
 class WM_OT_centered_popup(bpy.types.Operator):
     bl_idname = "wm.centered_popup"
     bl_label = "UDMF Toolkit"
-    bl_options = {'REGISTER', 'INTERNAL'}
+    bl_options = {"REGISTER", "INTERNAL"}
 
-    message: bpy.props.StringProperty(name="message", description="Text to display in the popup", default="", )
+    message: bpy.props.StringProperty(
+        name="message",
+        description="Text to display in the popup",
+        default="",
+    )
 
     def execute(self, context):
         # Your operator logic here...
-        return {'FINISHED'}
+        return {"FINISHED"}
 
     def invoke(self, context, event):
         # Save current mouse position

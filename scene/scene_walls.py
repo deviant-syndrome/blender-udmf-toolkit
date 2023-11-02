@@ -32,9 +32,12 @@ def texture_walls(textures_data, walls_mesh, walls_obj):
 
     for face_index, texture_data in textures_data.items():
         face = bm.faces[face_index]
-        material = create_material_for_face_new(walls_obj, face, face_index,
-                                                WallMaterialNodeParameters(texture_data,
-                                                                           data_layers))
+        material = create_material_for_face_new(
+            walls_obj,
+            face,
+            face_index,
+            WallMaterialNodeParameters(texture_data, data_layers),
+        )
         face.material_index = walls_obj.data.materials.find(material.name)
 
     bm.to_mesh(walls_obj.data)
@@ -55,5 +58,11 @@ def wall_operations(graph, udmf_map):
 
     walls_obj["udmf_type"] = "walls"
     add_walls_metadata(walls_obj, walls_metadata)
-    texture_walls({face_index: data["texture_data"] for face_index, data in walls_metadata.items()},
-                  walls_mesh, walls_obj)
+    texture_walls(
+        {
+            face_index: data["texture_data"]
+            for face_index, data in walls_metadata.items()
+        },
+        walls_mesh,
+        walls_obj,
+    )

@@ -5,7 +5,9 @@ import os
 
 
 def popup_error_message(error_message):
-    bpy.ops.wm.centered_popup('INVOKE_DEFAULT', message="Error exporting file:\n {}".format(error_message))
+    bpy.ops.wm.centered_popup(
+        "INVOKE_DEFAULT", message="Error exporting file:\n {}".format(error_message)
+    )
 
 
 def compute_label(cls, context):
@@ -16,7 +18,7 @@ def compute_label(cls, context):
 class OVERWRITE_OT_udmf(bpy.types.Operator):
     bl_idname = "overwrite_scene.pwad"
     bl_label = "placeholder"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
         try:
@@ -28,7 +30,7 @@ class OVERWRITE_OT_udmf(bpy.types.Operator):
             popup_error_message(e)
             raise e
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
     def invoke(self, context, event):
         pass
@@ -37,7 +39,7 @@ class OVERWRITE_OT_udmf(bpy.types.Operator):
 class EXPORT_OT_udmf(bpy.types.Operator):
     bl_idname = "export_scene.pwad"
     bl_label = "Export PWAD as..."
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
     # Define the filepath property for the file browser
     filepath: bpy.props.StringProperty(subtype="FILE_PATH")
@@ -52,11 +54,11 @@ class EXPORT_OT_udmf(bpy.types.Operator):
             popup_error_message(e)
             raise e
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
-        return {'RUNNING_MODAL'}
+        return {"RUNNING_MODAL"}
 
 
 def menu_func_export_to(self, context):
@@ -65,7 +67,10 @@ def menu_func_export_to(self, context):
 
 def menu_func_overwrite(self, context):
     if bpy.context.scene.original_pwad:
-        self.layout.operator(OVERWRITE_OT_udmf.bl_idname, text=compute_label(OVERWRITE_OT_udmf, bpy.context))
+        self.layout.operator(
+            OVERWRITE_OT_udmf.bl_idname,
+            text=compute_label(OVERWRITE_OT_udmf, bpy.context),
+        )
 
 
 def register():

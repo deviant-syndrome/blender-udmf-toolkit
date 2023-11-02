@@ -4,12 +4,14 @@ from mathutils import Vector
 from .visual_sector import VisualSector
 
 
-def create_sector_polygon(sector, graph, map, bm, vertices, sector_metadata, height_func, texture_func):
+def create_sector_polygon(
+    sector, graph, map, bm, vertices, sector_metadata, height_func, texture_func
+):
     vertex_coords = []
     visual_sector = VisualSector(map.sectors[sector])
     # Iterate over each linedef associated with this sector
     for linedef_data in graph[sector]:
-        v1, v2 = linedef_data['linedef']
+        v1, v2 = linedef_data["linedef"]
 
         # Add the vertices of this linedef to the vertex_coords list
         vertex_coords.append((vertices[v1].x, vertices[v1].y, 0))
@@ -25,10 +27,19 @@ def create_sector_polygon(sector, graph, map, bm, vertices, sector_metadata, hei
     # Perform Delaunay triangulation
     output = delaunay_2d_cdt(vector_coords_2d, [], [], 0, 0.0001)
 
-    new_vertex_coords_2d, out_edges, out_faces, orig_verts, orig_edges, orig_faces = output
+    (
+        new_vertex_coords_2d,
+        out_edges,
+        out_faces,
+        orig_verts,
+        orig_edges,
+        orig_faces,
+    ) = output
 
     # Convert the 2D coords back to 3D for use in Blender
-    new_vertex_coords_3d = [(v.x, v.y, height_func(visual_sector)) for v in new_vertex_coords_2d]
+    new_vertex_coords_3d = [
+        (v.x, v.y, height_func(visual_sector)) for v in new_vertex_coords_2d
+    ]
 
     vert_map = [bm.verts.new(v) for v in new_vertex_coords_3d]
 
@@ -37,8 +48,6 @@ def create_sector_polygon(sector, graph, map, bm, vertices, sector_metadata, hei
         bm.faces.new([vert_map[i] for i in face_indices])
         face_index = len(bm.faces) - 1
         sector_metadata[face_index] = {
-                "sector_index": sector,
-                "flat_texture": texture_func(visual_sector),
+            "sector_index": sector,
+            "flat_texture": texture_func(visual_sector),
         }
-
-

@@ -2,11 +2,17 @@ from io import StringIO
 
 import bpy
 
-from .utils import generate_texture_name, generate_floor_texture_name, generate_ceiling_texture_name
+from .utils import (
+    generate_texture_name,
+    generate_floor_texture_name,
+    generate_ceiling_texture_name,
+)
 from ..libs import load_udmf_map
 
 
-def update_udmf_sidedef_texture(udmf_map, sidedef_index, new_texture_name, texture_type):
+def update_udmf_sidedef_texture(
+    udmf_map, sidedef_index, new_texture_name, texture_type
+):
     """Update the texturemiddle property of a sidedef in a UDMF map."""
     if texture_type == "M":
         udmf_map.sidedefs[sidedef_index].texturemiddle = new_texture_name
@@ -22,17 +28,19 @@ def update_udmf_sidedef_texture(udmf_map, sidedef_index, new_texture_name, textu
         udmf_map.sidedefs[sidedef_index].offsety_bottom = 0
 
 
-def update_udmf_flat_texture(udmf_map, sector_index, texture_type, new_texture_name, panning_x, panning_y):
+def update_udmf_flat_texture(
+    udmf_map, sector_index, texture_type, new_texture_name, panning_x, panning_y
+):
     """
     Update the texture property of a sector in a UDMF map.
     texture_type: either 'floor' or 'ceiling'
     """
-    if texture_type not in ['floor', 'ceiling']:
+    if texture_type not in ["floor", "ceiling"]:
         raise ValueError("texture_type must be either 'floor' or 'ceiling'")
 
-    setattr(udmf_map.sectors[sector_index], f'texture{texture_type}', new_texture_name)
-    setattr(udmf_map.sectors[sector_index], f'xpanning{texture_type}', panning_x)
-    setattr(udmf_map.sectors[sector_index], f'ypanning{texture_type}', panning_y)
+    setattr(udmf_map.sectors[sector_index], f"texture{texture_type}", new_texture_name)
+    setattr(udmf_map.sectors[sector_index], f"xpanning{texture_type}", panning_x)
+    setattr(udmf_map.sectors[sector_index], f"ypanning{texture_type}", panning_y)
 
 
 def update_udmf_walls(obj, udmf_map):
@@ -52,7 +60,14 @@ def update_udmf_sector_flats(obj, udmf_map, floor_ceil_type, name_func):
         sector_index = material["sector_index"]
         panning_x = material["offset_x"]
         panning_y = material["offset_y"]
-        update_udmf_flat_texture(udmf_map, sector_index, floor_ceil_type, name_func(sector_index), panning_x, panning_y)
+        update_udmf_flat_texture(
+            udmf_map,
+            sector_index,
+            floor_ceil_type,
+            name_func(sector_index),
+            panning_x,
+            panning_y,
+        )
 
 
 def update_udmf(obj, udmf_map):
@@ -61,7 +76,9 @@ def update_udmf(obj, udmf_map):
     elif obj["udmf_type"] == "floors":
         update_udmf_sector_flats(obj, udmf_map, "floor", generate_floor_texture_name)
     elif obj["udmf_type"] == "ceilings":
-        update_udmf_sector_flats(obj, udmf_map, "ceiling", generate_ceiling_texture_name)
+        update_udmf_sector_flats(
+            obj, udmf_map, "ceiling", generate_ceiling_texture_name
+        )
 
 
 def create_updated_map(obj):

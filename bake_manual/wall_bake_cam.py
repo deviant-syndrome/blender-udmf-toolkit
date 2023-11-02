@@ -7,7 +7,7 @@ def position_camera_for_wall(obj_name, face_index):
     obj = bpy.data.objects[obj_name]
 
     # Ensure it's in object mode
-    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.mode_set(mode="OBJECT")
 
     # Get the face using BMesh
     bm = bmesh.new()
@@ -23,7 +23,7 @@ def position_camera_for_wall(obj_name, face_index):
         bpy.ops.object.camera_add(location=(0, 0, 0))
         cam = bpy.context.active_object
         cam.name = "WallBakeCam"
-        cam.data.type = 'ORTHO'
+        cam.data.type = "ORTHO"
     else:
         cam = bpy.data.objects["WallBakeCam"]
 
@@ -41,7 +41,7 @@ def position_camera_for_wall(obj_name, face_index):
     loc_camera = cam.location
 
     direction = look_at - loc_camera
-    rot_quat = direction.to_track_quat('-Z', 'Y')
+    rot_quat = direction.to_track_quat("-Z", "Y")
     cam.rotation_euler = rot_quat.to_euler()
 
     # Update the camera's orthographic scale

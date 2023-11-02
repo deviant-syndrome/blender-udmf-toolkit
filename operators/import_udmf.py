@@ -6,13 +6,15 @@ from ..utils import load_map_from_pwad
 
 
 def popup_error_message(error_message):
-    bpy.ops.wm.centered_popup('INVOKE_DEFAULT', message="Error importing file:\n {}".format(error_message))
+    bpy.ops.wm.centered_popup(
+        "INVOKE_DEFAULT", message="Error importing file:\n {}".format(error_message)
+    )
 
 
 class IMPORT_OT_udmf(bpy.types.Operator):
     bl_idname = "import_scene.udmf"
     bl_label = "Import UDMF"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
     scale: bpy.props.FloatProperty(name="Scale", default=0.01)
 
@@ -20,10 +22,7 @@ class IMPORT_OT_udmf(bpy.types.Operator):
     filepath: bpy.props.StringProperty(subtype="FILE_PATH")
 
     def get_options(self):
-        return {
-            "scale": self.scale,
-            "original_pwad": self.filepath
-        }
+        return {"scale": self.scale, "original_pwad": self.filepath}
 
     def execute(self, context):
         # Your import logic goes here, use self.filepath for the file path
@@ -38,17 +37,17 @@ class IMPORT_OT_udmf(bpy.types.Operator):
             popup_error_message(e)
             raise e
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
-        return {'RUNNING_MODAL'}
+        return {"RUNNING_MODAL"}
 
 
 class IMPORT_OT_pwad(IMPORT_OT_udmf):
     bl_idname = "import_scene.pwad"
     bl_label = "Import PWAD"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
     # Define the filepath property for the file browser
     filepath: bpy.props.StringProperty(subtype="FILE_PATH")
@@ -65,11 +64,11 @@ class IMPORT_OT_pwad(IMPORT_OT_udmf):
             popup_error_message(e)
             raise e
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
-        return {'RUNNING_MODAL'}
+        return {"RUNNING_MODAL"}
 
 
 def menu_func_udmf_import(self, context):

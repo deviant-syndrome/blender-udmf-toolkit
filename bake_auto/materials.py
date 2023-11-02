@@ -30,17 +30,19 @@ def assign_bake_textures_to_obj(obj):
 
 def assign_bake_texture_to_material(material):
     nodes = material.node_tree.nodes
-    width = material['width']
-    height = material['height']
-    
+    width = material["width"]
+    height = material["height"]
+
     for node in nodes:
-        if node.name == 'Tiled Texture':
+        if node.name == "Tiled Texture":
             baking_node = nodes.new(type="ShaderNodeTexImage")
             baking_node.name = "Bake_Node"
             baking_image_name = "Bake_{}".format(material.name)
             baking_node.location = (1200, 400)
             if baking_image_name not in bpy.data.images:
-                baking_image = bpy.data.images.new(baking_image_name, width=int(width), height=int(height))
+                baking_image = bpy.data.images.new(
+                    baking_image_name, width=int(width), height=int(height)
+                )
             else:
                 baking_image = bpy.data.images[baking_image_name]
             baking_node.image = baking_image
@@ -50,7 +52,7 @@ def assign_bake_texture_to_material(material):
             # Select and activate the baking texture node
             # Redraw the Node Editor
             for area in bpy.context.screen.areas:
-                if area.type == 'NODE_EDITOR':
+                if area.type == "NODE_EDITOR":
                     area.tag_redraw()
 
             baking_node.select = True

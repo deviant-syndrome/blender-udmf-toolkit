@@ -3,7 +3,9 @@ import bpy
 
 def init_props():
     bpy.types.Scene.map_scale = bpy.props.FloatProperty(name="Map scale", default=0.01)
-    bpy.types.Scene.original_pwad = bpy.props.StringProperty(name="Original PWAD", default="")
+    bpy.types.Scene.original_pwad = bpy.props.StringProperty(
+        name="Original PWAD", default=""
+    )
 
 
 def clear_props():

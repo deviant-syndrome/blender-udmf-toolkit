@@ -1,4 +1,4 @@
-name: Blender Portable CI with Cache
+name: Build and CI
 
 on:
   push:

@@ -15,10 +15,17 @@ class ObjectPrepareBakeOperator(bpy.types.Operator):
         result = prepare_for_baking(context.active_object)
         if result:
             removed, added = result
-            self.report({'INFO'}, "Bake preparation done. Removed " + str(removed) + " materials and added " + str(added) + " blank bake images.")
+            self.report(
+                {"INFO"},
+                "Bake preparation done. Removed "
+                + str(removed)
+                + " materials and added "
+                + str(added)
+                + " blank bake images.",
+            )
         else:
-            self.report({'WARNING'}, "Bake preparation skipped. Not a UDMF object.")
-        return {'FINISHED'}
+            self.report({"WARNING"}, "Bake preparation skipped. Not a UDMF object.")
+        return {"FINISHED"}
 
 
 class ObjectExportBakedTexturesOperator(bpy.types.Operator):
@@ -31,16 +38,18 @@ class ObjectExportBakedTexturesOperator(bpy.types.Operator):
         # Your code here. For example, just print a message:
         print("Bake textures export started...")
         num_saved = save_all_baked_images(context.active_object)
-        self.report({'INFO'}, "Bake textures export done. Saved " + str(num_saved) + " images.")
-        return {'FINISHED'}
+        self.report(
+            {"INFO"}, "Bake textures export done. Saved " + str(num_saved) + " images."
+        )
+        return {"FINISHED"}
 
 
 # Step 2: Define the Panel
 class SimpleObjectPanel(bpy.types.Panel):
     bl_label = "Simple Panel"
     bl_idname = "OBJECT_PT_simple"
-    bl_space_type = 'PROPERTIES'
-    bl_region_type = 'WINDOW'
+    bl_space_type = "PROPERTIES"
+    bl_region_type = "WINDOW"
     bl_context = "object"
 
     def draw(self, context):

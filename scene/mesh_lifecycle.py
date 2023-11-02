@@ -26,7 +26,9 @@ class MeshObjectLifecycle:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.bm:
-            bmesh.ops.scale(self.bm, vec=(self.scale, self.scale, self.scale), verts=self.bm.verts)
+            bmesh.ops.scale(
+                self.bm, vec=(self.scale, self.scale, self.scale), verts=self.bm.verts
+            )
             self.bm.to_mesh(self.mesh)
             self.bm.free()
 
@@ -46,5 +48,3 @@ class MeshObjectLifecycle:
         if exc_type is not None:
             # Optionally, if you want to handle/log the exception
             print(f"Exception occurred: {exc_val}")
-
-

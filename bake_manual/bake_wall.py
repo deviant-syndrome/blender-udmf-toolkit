@@ -1,5 +1,8 @@
 import bpy
-from bake_manual.materials import make_faces_transparent_except, restore_original_materials
+from bake_manual.materials import (
+    make_faces_transparent_except,
+    restore_original_materials,
+)
 from bake_auto.utils import get_baked_texture_path
 from scene.metadata import get_face_custom_attribute
 from bake_auto.utils import generate_texture_name
@@ -18,8 +21,12 @@ def adjust_render_settings_for_wall(obj, face_index):
     height = (obj.matrix_world @ v3 - obj.matrix_world @ v0).length
 
     # Set the render resolution
-    bpy.context.scene.render.resolution_x = int(width * 100)  # Scaling factor can be adjusted
-    bpy.context.scene.render.resolution_y = int(height * 100)  # Scaling factor can be adjusted
+    bpy.context.scene.render.resolution_x = int(
+        width * 100
+    )  # Scaling factor can be adjusted
+    bpy.context.scene.render.resolution_y = int(
+        height * 100
+    )  # Scaling factor can be adjusted
 
 
 def render_wall_face(obj, face_index):

@@ -1,6 +1,9 @@
 # UDMF Toolkit for Blender
 UDMF Toolkit is a Blender Addon allows you to imports UDMF DOOM maps into Blender.
 
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+![CI](https://github.com/deviant-syndrome/blender-udmf-toolkit/actions/workflows/ci.yml/badge.svg?branch=main)
+
 ## Features
 * **UDMF Map Importing**: Directly import your DOOM maps from PWADs into Blender.
 * **Texture Baking (Upcoming)**: In the future, this feature will allow users to seamlessly bake the DOOM textures for better visualization and rendering in Blender.
