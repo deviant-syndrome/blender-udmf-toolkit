@@ -9,7 +9,7 @@ def create_material_for_face_new(obj, face, face_index, wall_material_params: Ma
     try:
         # Try loading the image texture
         texture_image = bpy.data.images.load(get_texture_path(texture_name))
-    except:
+    except: # noqa E722
         # Use the fallback checker material
         fallback_material = create_checker_material(wall_material_params.get_material_name(obj, face_index, face) + "_fallback")
         obj.data.materials.append(fallback_material)

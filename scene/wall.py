@@ -46,7 +46,7 @@ def add_wall(v1, v2, start_height, end_height, bm, face_metadata, sidedef=None, 
     top_2 = bm.verts.new((v2[0], v2[1], end_height))
 
     # Create the wall face
-    face = bm.faces.new([bottom_1, bottom_2, top_2, top_1])
+    bm.faces.new([bottom_1, bottom_2, top_2, top_1])
 
     # Assign texture and sidedef index
     face_index = len(bm.faces) - 1

@@ -1,4 +1,4 @@
-from .texture_utils import get_simple_tiling_on_mesh, set_default_uv_on_mesh
+from .texture_utils import get_simple_tiling_on_mesh
 
 
 class MaterialNodeParameters:
